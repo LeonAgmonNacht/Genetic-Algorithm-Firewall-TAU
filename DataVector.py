@@ -14,7 +14,6 @@ class DataVector(object):
     Time to Live (TTL)
     Packet type
     Sequence number
-    Number of hops between the source and destination (not available currently)
     """
 
     def __init__(self, sc_packet):
