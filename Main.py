@@ -1,4 +1,3 @@
-from FireWallGeneration import FireWallGeneration
 
 def read_malicious_packets():
     """
