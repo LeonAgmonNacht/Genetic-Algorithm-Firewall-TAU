@@ -41,18 +41,14 @@ class DataVector(object):
         self.protocol = sc_packet[layer_index - 1].name
 
 
-class PCAPData(object):
+def get_packets_from_pcap(pcap_path):
     """
-    a class representing the data in a PCAP file
-    use example: packets = PCAPData("/Users/Leon/Documents/EA/NTLM-wenchao.pcap")
+    receives the packets from the given file path
+    :param pcap_path: the path to the pcap file to load the data from
+    :return: list of DataVectors holding the data in the pcap file
     """
-    def __init__(self, path_to_pcap):
-        """
-        init with a path to a pcap file to load the data from
-        :param path_to_pcap: path to file
-        :return: a new created instance
-        """
-        self.packets = []  # the packets of the given pcap file as a DataVector
-        pcap_data = rdpcap(path_to_pcap)
-        for p in pcap_data:
-            self.packets.append(DataVector(p))
+    packets = []  # the packets of the given pcap file as a DataVector
+    pcap_data = rdpcap(pcap_path)
+    for p in pcap_data:
+        packets.append(DataVector(p))
+    return packets
