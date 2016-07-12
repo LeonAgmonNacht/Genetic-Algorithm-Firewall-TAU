@@ -5,7 +5,7 @@ from scapy.all import rdpcap
 
 class DataVector(object):
     """
-    1a class representing a relevant data from a single packet. the data is:
+    a class representing a relevant data from a single packet. the data is:
     Source IP address
     Destination IP address
     Source port number
