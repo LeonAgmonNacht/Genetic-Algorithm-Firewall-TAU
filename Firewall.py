@@ -5,6 +5,7 @@ from Function import Function
 class FireWall(object):
     """
     a class representing a firewall (the ability to detect malicious packets)
+    :ivar param_vector: the vector that defines the behaviour of self, an instance of ParamVector
     """
     def __init__(self, param_vector):
         """
@@ -14,8 +15,11 @@ class FireWall(object):
         """
         # the function that should return if a packet is malicious or not:
         self.func = FireWall.individual_firewall_generator(param_vector)
+        self.param_vector = param_vector
+
     def __call__(self, data_vector):
         return self.func(data_vector)
+
     @staticmethod
     def individual_firewall_generator(param_vector):
         """
@@ -24,6 +28,7 @@ class FireWall(object):
         :return: a new firewall defined entirely by the given data (param_vector)
         """
         # TODO: zemmel asked to implement
+
     @staticmethod
     def mate_param_vectors(param_vector1, param_vector2):
         """
