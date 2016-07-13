@@ -24,21 +24,34 @@ class ParamVector(object):
     # the functions that can be used to mutate a ParamVector, instances of ProbabilityFunction
     mutate_functions = []
 
-    def __init__(self):
+    def __init__(self, ip_src_set=set(), ip_dst_set=set(), port_src_set=set(), port_dst_set=set(),
+                 sizes_low_bound=0, sizes_high_bound=0, ttl_thresh=0, protocol_set=set(),
+                 seq_low_bound=0, seq_high_bound=0, weight_of={}):
         """
-        init self with empty data
+        init self with all the needed variables
+        :param ip_src_set: a set of tuples (with 4 ints) representing the source ip addresses.
+        :param ip_dst_set: a set of tuples (with 4 ints) representing the destination ip addresses.
+        :param src_port_set: a set of ints representing the source port addresses.
+        :param dst_port_set: a set of ints representing the destination port addresses.
+        :param sizes_low_bound: a number that is the low bound for the sizes
+        :param sizes_high_bound: a number that is the high bound for the sizes
+        :param ttl_thresh: a number that is the thresh hold for the TTL(time to live)
+        :param protocol_set: a set of strings representing the protocols
+        :param seq_low_bound: a number that is the low bound for the sequence number
+        :param seq_high_bound: a number that is the high bound for the sequence number
+        :param weight_of: a dictionary that takes the name of a variable and returns the weight of it in the fitness
         """
-        self.ip_src_set = set()
-        self.ip_dst_set = set()
-        self.src_port_set = set()
-        self.dst_port_set = set()
-        self.sizes_set_low_bound = 0
-        self.sizes_set_high_bound = 0
-        self.ttl_thresh = 0
-        self.protocol_set = set()
-        self.seq_num_low_bound = 0
-        self.seq_num_high_bound = 0
-        self.weight_of = {}
+        self.ip_src_set = ip_src_set
+        self.ip_dst_set = ip_dst_set
+        self.port_src_set = port_src_set
+        self.port_dst_set = port_dst_set
+        self.sizes_low_bound = sizes_low_bound
+        self.sizes_high_bound = sizes_high_bound
+        self.ttl_thresh = ttl_thresh
+        self.protocol_set = protocol_set
+        self.seq_low_bound = seq_low_bound
+        self.seq_high_bound = seq_high_bound
+        self.weight_of = weight_of
 
     @staticmethod
     def generate_random_data():
@@ -52,4 +65,17 @@ class ParamVector(object):
         """
         :return: a string that represents a ParamVector
         """
-        return ""
+        repr = ""
+        suffix = ","
+        repr += "src_ip" + suffix + str(self.ip_src_set) + "::"
+        repr += "dst_ip" + suffix + str(self.ip_dst_set) + "::"
+        repr += "src_port" + suffix + str(self.port_src_set) + "::"
+        repr += "dst_port" + suffix + str(self.port_dst_set) + "::"
+        repr += "sizes_low" + suffix + str(self.sizes_low_bound) + "::"
+        repr += "sizes_high" + suffix + str(self.sizes_high_bound) + "::"
+        repr += "ttl" + suffix + str(self.ttl_thresh) + "::"
+        repr += "protocol" + suffix + str(self.protocol_set) + "::"
+        repr += "seq_low" + suffix + str(self.seq_low_bound) + "::"
+        repr += "seq_high" + suffix + str(self.seq_high_bound) + "::"
+        repr += "weight" + suffix + str(self.weight_of)
+        return repr
