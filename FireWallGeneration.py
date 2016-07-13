@@ -50,8 +50,6 @@ class FireWallGeneration:
             fw_2 = choice(selected_firewalls)
             new_firewall = FireWall.mate_param_vectors(fw_1, fw_2)
             generated_firewall.append(new_firewall)
-
-        mutated_firewalls = {FireWall(fw.param_vector.mutate()) for fw in generated_firewall}
         return FireWallGeneration(mutated_firewalls)
 
     def write_self_to_file(self, path_file):
