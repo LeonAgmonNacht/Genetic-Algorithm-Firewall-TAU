@@ -17,6 +17,9 @@ class FireWall(object):
         self.func = FireWall.individual_firewall_generator(param_vector)
         self.param_vector = param_vector
 
+    def __call__(self, data_vector):
+        return self.func(data_vector)
+
     @staticmethod
     def individual_firewall_generator(param_vector):
         """
