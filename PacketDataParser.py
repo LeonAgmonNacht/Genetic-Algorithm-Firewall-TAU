@@ -25,7 +25,7 @@ def get_packets_from_pcap(pcap_path):
     return packets
 
 
-def read_pcap_file(file_path):
+def read_packets(file_path):
     """
     reads the content of the given pcap file into pandas matrix saving only the wanted data, meaning:
     Source IP address
@@ -43,8 +43,8 @@ def read_pcap_file(file_path):
     packets_data = []
     for sc_packet in packets:
 
-        dstIP = sc_packet[IP].dst  # what is IP?
-        srcIP = sc_packet[IP].src  # what is IP?
+        dstIP = sc_packet[IP].dst # what is IP?
+        srcIP = sc_packet[IP].src # what is IP?
         dstPort = sc_packet.dport
         srcPort = sc_packet.sport
         size = len(sc_packet)
