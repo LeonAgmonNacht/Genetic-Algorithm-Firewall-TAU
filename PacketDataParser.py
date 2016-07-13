@@ -1,6 +1,15 @@
 import pandas as pd
 from scapy.all import *
 
+# constants:
+
+DST_IP_STRING = "dstIP"
+SRC_IP_STRING = "srcIP"
+DST_PORT_STRING = "dstPort"
+SRC_PORT_STRING = "srcPort"
+SIZE_STRING = "size"
+TTL_STRING = "ttl"
+PROTOCOL_STRING = "protocol"
 
 def get_packets_from_pcap(pcap_path):
     """
@@ -50,6 +59,14 @@ def read_pcap_file(file_path):
     # created pandas dataFrame with found data:
 
     data = pd.DataFrame(data=packets_data,
-                        columns=["dstIP", "srcIP", "dstPort", "srcPort", "size", "ttl", "protocol"])
+                        columns=[DST_IP_STRING,
+                                 SRC_IP_STRING,
+                                 DST_PORT_STRING,
+                                 SRC_PORT_STRING,
+                                 SIZE_STRING,
+                                 TTL_STRING,
+                                 PROTOCOL_STRING])
 
     return data
+
+read_pcap_file("/Users/Leon/Documents/EA/NTLM-wenchao.pcap")
