@@ -59,4 +59,5 @@ particular_data_indicator = particular_data_indicator_tuple(ip_method=simple_ind
                                                             size_packet_method=range_indicator_method,
                                                             ttl_method=simple_indicator_method,
                                                             type_packet_method=simple_indicator_method,
-                                                            sequence_num_method=greater_indicator_method)
+                                                            sequence_num_method=lambda val, min_value, max_va:
+                                                            not range_indicator_method(val, min_value, max_va))
