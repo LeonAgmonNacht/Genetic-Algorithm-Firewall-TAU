@@ -71,5 +71,3 @@ def read_packets(file_path):
                                  SEQ_NUM_STRING])
 
     return data
-
-#read_packets("/Users/Leon/Documents/EA/NTLM-wenchao.pcap")

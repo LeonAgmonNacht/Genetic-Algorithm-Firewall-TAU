@@ -1,22 +1,27 @@
 from FireWallGeneration import FireWallGeneration
 from FireWallFitness import FireWallTest
+from PacketDataParser import *
+
 GENERATIONS_NUMBER = 10000
 NUM_OF_FIREWALLS = 250
+CLEAN_PACKETS_PCAP_FILE_PATH = ""
+MALICIOUS_PACKETS_PCAP_FILE_PATH = ""
+
 
 def read_malicious_packets():
     """
     reads the malicious packets from the path in constants
-    :return: a list with the data of the malicious packets as DataVector
+    :return: a DataFrame with the relevant data retrieved from the packets
     """
-    pass
+    return read_packets(MALICIOUS_PACKETS_PCAP_FILE_PATH)
 
 
 def read_clean_packets():
     """
     reads the clean packets from the path in constants
-    :return: a list with the data of the clean packets as DataVector
+    :return: a DataFrame with the relevant data retrieved from the packets
     """
-    pass
+    read_packets(CLEAN_PACKETS_PCAP_FILE_PATH)
 
 
 if __name__ == "__main__":

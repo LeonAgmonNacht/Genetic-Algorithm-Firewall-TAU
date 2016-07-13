@@ -155,7 +155,7 @@ class ParamVector(object):
         assert isinstance(other, ParamVector)
         weights = {}
         for param in self.weight_keys:
-            if(randint(0,1)):
+            if randint(0,1):
                 weights[param] = self[param]
             else:
                 weights[param] = other[param]
