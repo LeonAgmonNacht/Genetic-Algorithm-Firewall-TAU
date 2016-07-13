@@ -53,6 +53,13 @@ class ParamVector(object):
         self.seq_high_bound = seq_high_bound
         self.weight_of = weight_of
 
+    def mutate(self):
+        """
+        applying the mutate mechanism on self
+        :return: a new ParamVector instance with the mutated data in self
+        """
+        pass
+
     @staticmethod
     def generate_random_data():
         """
