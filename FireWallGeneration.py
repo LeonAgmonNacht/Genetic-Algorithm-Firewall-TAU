@@ -16,7 +16,13 @@ class FireWallGeneration:
         self.num_of_firewalls = num_of_start_firewalls
         self.firewalls = {FireWall(ParamVector.generate_random_data()) for _ in range(num_of_start_firewalls)}
 
-    def __init__(self, num):
+    def __init__(self, firewalls):
+        """
+        init self with firewalls
+        :param firewalls: the firewalls to set to self, a set of firewalls
+        """
+        self.firewalls = firewalls
+        self.num_of_firewalls = len(firewalls)
 
     def generate_next_generation(self, fitness_calculator, passing_num = 15):
         """
@@ -34,6 +40,9 @@ class FireWallGeneration:
             fw_2 = choice(selected_firewalls)
             new_firewall = FireWall.mate_param_vectors(fw_1, fw_2)
             generated_firewall.append(new_firewall)
+
+        mutated_firewalls = {FireWall(fw.param_vector.mutate()) for fw in generated_firewall}
+        return FireWallGeneration(mutated_firewalls)
 
     def write_self_to_file(self, path_file):
         """
