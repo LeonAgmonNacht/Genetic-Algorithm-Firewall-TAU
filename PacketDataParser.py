@@ -12,6 +12,7 @@ TTL_STRING = "ttl"
 PROTOCOL_STRING = "protocol"
 SEQ_NUM_STRING = "seq"
 
+
 def get_packets_from_pcap(pcap_path):
     """
     receives the packets from the given file path

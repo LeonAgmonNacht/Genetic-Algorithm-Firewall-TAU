@@ -1,4 +1,3 @@
-
 def read_malicious_packets():
     """
     reads the malicious packets from the path in constants
@@ -13,6 +12,7 @@ def read_clean_packets():
     :return: a list with the data of the clean packets as DataVector
     """
     pass
+
 
 if __name__ == "main":
     pass

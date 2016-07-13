@@ -1,6 +1,8 @@
 from ParamVector import ParamVector
 from Firewall import FireWall
 from random import choice
+from MemoizationUtils import *
+
 
 class FireWallGeneration:
     """
@@ -24,6 +26,15 @@ class FireWallGeneration:
         self.firewalls = firewalls
         self.num_of_firewalls = len(firewalls)
 
+    def __repr__(self):
+        """
+        :return: a string representation of a firewall generation
+        """
+        gen_repr = ""
+        for f in self.firewalls:
+            gen_repr += str(f) + "\n"
+        return gen_repr
+
     def generate_next_generation(self, fitness_calculator, passing_num = 15):
         """
         :param fitness_calculator: the instance of FireWallFitness to be used in order to calculate the fitness
@@ -32,7 +43,7 @@ class FireWallGeneration:
         :return: the next generation created using the firewalls in self
         """
         fitnesses = [(fw, fitness_calculator.get_fitness(fw)) for fw in self.firewalls]
-        fitnesses.sort(key=lambda (fw, fitness): fitnesses)
+        fitnesses.sort(key=lambda fw, fitness: fitnesses)
         selected_firewalls = [fw for (fw, _) in fitnesses[-passing_num:]]
         generated_firewall = []
         for _ in range(self.num_of_firewalls):
@@ -40,7 +51,7 @@ class FireWallGeneration:
             fw_2 = choice(selected_firewalls)
             new_firewall = FireWall.mate_param_vectors(fw_1, fw_2)
             generated_firewall.append(new_firewall)
-        return FireWallGeneration(mutated_firewalls)
+        return FireWallGeneration( generated_firewall)
 
     def write_self_to_file(self, path_file):
         """
@@ -48,7 +59,9 @@ class FireWallGeneration:
         :param path_file: the file path to save the data to
         :return: None
         """
-        pass
+        f = open(path_file, 'w')
+        for fw in self.firewalls:
+            f.write(str(fw) + "\n")
 
     @staticmethod
     def load_from_file(file_path):
@@ -57,3 +70,7 @@ class FireWallGeneration:
         :param file_path: the path to the file that contains the data
         :return: a FireWallGeneration containing the data(firewalls) in the file
         """
+        f = open(file_path, 'r')
+        lines = f.readlines()
+        fws = [get_firewall_from_string(line) for line in lines]
+        return FireWallGeneration(fws)
