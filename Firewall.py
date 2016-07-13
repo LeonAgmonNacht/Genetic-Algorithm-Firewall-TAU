@@ -2,11 +2,13 @@
 from collections import namedtuple
 from Function import Function
 
+
 class FireWall(object):
     """
     a class representing a firewall (the ability to detect malicious packets)
     :ivar param_vector: the vector that defines the behaviour of self, an instance of ParamVector
     """
+
     def __init__(self, param_vector):
         """
         creates a firewall from the given data in param_vector
@@ -42,20 +44,21 @@ class FireWall(object):
         :param param_vector2: the second ParamVector to merge
         :return: a new ParamVector that is the merge of both
         """
-        return FireWall.individual_firewall_generator(param_vector1+param_vector2)
+        return FireWall.individual_firewall_generator(param_vector1 + param_vector2)
+
 
 # single data (vector) methods:
 particular_data_indicator_tuple = namedtuple("ip_method",
-                                       "port_method",
-                                       "size_packet_method",
-                                       "ttl_method",
-                                       "type_packet_method",
-                                       "sequence_num_method")
+                                             "port_method",
+                                             "size_packet_method",
+                                             "ttl_method",
+                                             "type_packet_method",
+                                             "sequence_num_method")
 
 # methods types:
-simple_indicator_method = Function(lambda (param, arr): param in arr)
-range_indicator_method = Function(lambda (val, min_value, max_val): min_value <= val <= max_val)
-greater_indicator_method = Function(lambda (val, threshold): val > threshold)
+simple_indicator_method = Function(lambda param, arr: param in arr)
+range_indicator_method = Function(lambda val, min_value, max_val: min_value <= val <= max_val)
+greater_indicator_method = Function(lambda val, threshold: val > threshold)
 
 # structure that contains the needed functions
 

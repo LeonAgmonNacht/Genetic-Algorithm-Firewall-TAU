@@ -4,6 +4,7 @@ class FireWallTest():
     :ivar clean_data: the clean data to be used to test fire walls (packets with no malicious intentions)
     :ivar malicious_data: the malicious data to be used to test fire walls (packets with malicious intentions)
     """
+
     def __init__(self, clean_data, malicious_data):
         """
         :param clean_data: the clean data to be used to test fire walls (packets with no malicious intentions)
@@ -24,4 +25,3 @@ class FireWallTest():
         :return: score between [0,1]
         """
         pass
-
