@@ -23,5 +23,6 @@ class FireWallTest():
         :param fire_wall: the firewall to score
         :return: score between [0,1]
         """
-        pass
+        clean_detected_as_malicous = 0
+
 
