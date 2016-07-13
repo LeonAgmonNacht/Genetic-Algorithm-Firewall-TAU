@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d242cc9c-9c6b-4f6f-98bc-6d222a234fd1" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/FireWallFitness.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/FireWallGeneration.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Main.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Functions.py" afterPath="$PROJECT_DIR$/Function.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DataVector.py" afterPath="$PROJECT_DIR$/DataVector.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Firewall.py" afterPath="$PROJECT_DIR$/Firewall.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ParamVector.py" afterPath="$PROJECT_DIR$/ParamVector.py" />
-    </list>
+    <list default="true" id="d242cc9c-9c6b-4f6f-98bc-6d222a234fd1" name="Default" comment="" />
     <ignored path="Genetic-Algorithm-Firewall-TAU-Final.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
