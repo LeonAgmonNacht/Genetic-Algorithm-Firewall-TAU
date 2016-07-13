@@ -78,7 +78,7 @@ class FireWall(object):
             protocol_func(packet[PROTOCOL_STRING])+\
             seq_func(packet[SEQ_NUM_STRING])
 
-        normlized_func = lambda packet: all_func(packet)/sum_weights
+        normlized_func = lambda packet: float(all_func(packet))/float(sum_weights)
         return Function(normlized_func)
 
     @staticmethod
