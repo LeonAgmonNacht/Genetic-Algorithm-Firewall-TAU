@@ -44,26 +44,32 @@ class FireWall(object):
         """
         pass
 
+    def __repr__(self):
+        """
+        The represent of a firewall is just the represent of its ParamVector
+        :return: a string representation of the firewall
+        """
+        return "FireWall-" + str(self.param_vector)
 
 # single data (vector) methods:
-particular_data_indicator_tuple = namedtuple("ip_method",
-                                       "port_method",
-                                       "size_packet_method",
-                                       "ttl_method",
-                                       "type_packet_method",
-                                       "sequence_num_method")
-
-# methods types:
-simple_indicator_method = Function(lambda (param, arr): param in arr)
-range_indicator_method = Function(lambda (val, min_value, max_val): min_value <= val <= max_val)
-greater_indicator_method = Function(lambda (val, threshold): val > threshold)
-
-# structure that contains the needed functions
-
-particular_data_indicator = particular_data_indicator_tuple(ip_method=simple_indicator_method,
-                                                            port_method=simple_indicator_method,
-                                                            size_packet_method=range_indicator_method,
-                                                            ttl_method=simple_indicator_method,
-                                                            type_packet_method=simple_indicator_method,
-                                                            sequence_num_method=lambda val, min_value, max_va:
-                                                            not range_indicator_method(val, min_value, max_va))
+# particular_data_indicator_tuple = namedtuple("ip_method",
+#                                        "port_method",
+#                                        "size_packet_method",
+#                                        "ttl_method",
+#                                        "type_packet_method",
+#                                        "sequence_num_method")
+#
+# # methods types:
+# simple_indicator_method = Function(lambda (param, arr): param in arr)
+# range_indicator_method = Function(lambda (val, min_value, max_val): min_value <= val <= max_val)
+# greater_indicator_method = Function(lambda (val, threshold): val > threshold)
+#
+# # structure that contains the needed functions
+#
+# particular_data_indicator = particular_data_indicator_tuple(ip_method=simple_indicator_method,
+#                                                             port_method=simple_indicator_method,
+#                                                             size_packet_method=range_indicator_method,
+#                                                             ttl_method=simple_indicator_method,
+#                                                             type_packet_method=simple_indicator_method,
+#                                                             sequence_num_method=lambda val, min_value, max_va:
+#                                                             not range_indicator_method(val, min_value, max_va))

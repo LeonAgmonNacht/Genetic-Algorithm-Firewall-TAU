@@ -1,6 +1,7 @@
 from ParamVector import ParamVector
 from Firewall import FireWall
 from random import choice
+from MemoizationUtils import *
 
 class FireWallGeneration:
     """
@@ -23,6 +24,15 @@ class FireWallGeneration:
         """
         self.firewalls = firewalls
         self.num_of_firewalls = len(firewalls)
+
+    def __repr__(self):
+        """
+        :return: a string representation of a firewall generation
+        """
+        gen_repr = ""
+        for f in self.firewalls:
+            gen_repr += str(f) + "\n"
+        return gen_repr
 
     def generate_next_generation(self, fitness_calculator, passing_num = 15):
         """
@@ -50,6 +60,10 @@ class FireWallGeneration:
         :param path_file: the file path to save the data to
         :return: None
         """
+        f = open(path_file, 'w')
+        for fw in self.firewalls:
+            f.write(str(fw) + "\n")
+
 
     @staticmethod
     def load_from_file(file_path):
@@ -58,3 +72,7 @@ class FireWallGeneration:
         :param file_path: the path to the file that contains the data
         :return: a FireWallGeneration containing the data(firewalls) in the file
         """
+        f = open(file_path, 'r')
+        lines = f.readlines()
+        fws = [get_firewall_from_string(line) for line in lines]
+        return FireWallGeneration(fws)
