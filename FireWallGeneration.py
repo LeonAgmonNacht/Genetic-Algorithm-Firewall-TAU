@@ -48,6 +48,7 @@ class FireWallGeneration:
         :param path_file: the file path to save the data to
         :return: None
         """
+        pass
 
     @staticmethod
     def load_from_file(file_path):

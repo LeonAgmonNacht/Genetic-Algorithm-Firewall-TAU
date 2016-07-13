@@ -1,3 +1,5 @@
+from random import randint, uniform
+from MemoizationUtils import get_random_protocol
 class ParamVector(object):
     """
     This class represents the vectors that defines a firewall
@@ -20,6 +22,18 @@ class ParamVector(object):
     TTL = "ttl"
     PROTOCOL = "protocol"
     SEQ = "seq_number"
+
+    # random data constants:
+
+    SIZE_RANDOM_LOW_MIN = 0
+    SIZE_RANDOM_LOW_MAX = 2000
+    SIZE_RANDOM_HIGH_MIN = 1
+    SIZE_RANDOM_HIGH_MAX = 2000
+    TTL_THRESH_MIN = 0
+    TTL_THRESH_MAX = 255
+    SEQ_TRESH_MIN = 0
+    SEQ_THRESH_MAX = 2**31
+    WEIGHT_MAX_VAL = 10
 
     # the functions that can be used to mutate a ParamVector, instances of ProbabilityFunction
     mutate_functions = []
@@ -59,16 +73,56 @@ class ParamVector(object):
         :return: a new ParamVector instance with the mutated data in self
         """
         pass
-
-
-
+    
     @staticmethod
     def generate_random_data():
         """
         creates a ParamVector with random data
         :return: an instance of ParamVector that is defined using random data
         """
-        pass
+        # helper lambdas:
+        random_ip = lambda: tuple([randint(0, 255) for _ in range(4)])
+        random_port = lambda: randint(0, 65535)
+
+        src_ip = random_ip()
+        dst_ip = random_ip()
+        src_port = random_port()
+        dst_port = random_port()
+        size_low = randint(SIZE_RANDOM_LOW_MIN, SIZE_RANDOM_LOW_MAX)
+        size_high = size_low + randint(SIZE_RANDOM_HIGH_MIN, SIZE_RANDOM_HIGH_MAX)
+        ttl = randint(TTL_THRESH_MIN, TTL_THRESH_MAX)
+        protoc = get_random_protocol()
+        seq_low = randint(SEQ_TRESH_MIN, SEQ_TRESH_MAX)
+        seq_high = seq_low + randint(SEQ_TRESH_MIN, SEQ_TRESH_MAX)
+
+        weights = {DST_IP : uniform(0, WEIGHT_MAX_VAL),
+                   SRC_IP : uniform(0, WEIGHT_MAX_VAL),
+                   DST_PORT : uniform(0, WEIGHT_MAX_VAL),
+                   SRC_PORT : uniform(0, WEIGHT_MAX_VAL),
+                   SIZE : uniform(0, WEIGHT_MAX_VAL),
+                   TTL : uniform(0, WEIGHT_MAX_VAL),
+                   PROTOCOL : uniform(0, WEIGHT_MAX_VAL),
+                   SEQ : uniform(0, WEIGHT_MAX_VAL)}
+
+        sum_weights = sum(weights.values())
+
+        # normalizing the values:
+
+        for key in weights.keys():
+            weights[key] = weights[key]/sum_weights
+
+        return ParamVector(ip_src_set=set(src_ip),
+                           ip_dst_set=set(dst_ip),
+                           port_src_set=set(src_port),
+                           port_dst_set=set(dst_port),
+                           sizes_low_bound=size_low,
+                           sizes_high_bound=size_high,
+                           ttl_thresh=ttl,
+                           protocol_set=set(protoc),
+                           seq_low_bound=seq_low,
+                           seq_high_bound=seq_high,
+                           weight_of=weights)
+
 
     def __add__(self, other):
         result = None

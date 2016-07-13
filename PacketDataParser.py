@@ -10,6 +10,7 @@ SRC_PORT_STRING = "srcPort"
 SIZE_STRING = "size"
 TTL_STRING = "ttl"
 PROTOCOL_STRING = "protocol"
+SEQ_NUM_STRING = "seq"
 
 def get_packets_from_pcap(pcap_path):
     """
@@ -42,22 +43,22 @@ def read_packets(file_path):
     packets_data = []
     for sc_packet in packets:
 
-        dstIP = sc_packet[IP].dst # what is IP?
-        srcIP = sc_packet[IP].src # what is IP?
+        dstIP = sc_packet[IP].dst
+        srcIP = sc_packet[IP].src
         dstPort = sc_packet.dport
         srcPort = sc_packet.sport
         size = len(sc_packet)
         ttl = sc_packet.ttl
-
+        seq = sc_packet.seq
         # get upper layer in packet:
         layer_count = 0
         while sc_packet.getlayer(layer_count):
             layer_count += 1
 
         protocol = sc_packet.getlayer(layer_count - 2).name
-        packets_data.append([dstIP, srcIP, dstPort, srcPort, size, ttl, protocol])
-    # created pandas dataFrame with found data:
+        packets_data.append([dstIP, srcIP, dstPort, srcPort, size, ttl, protocol, seq])
 
+    # created pandas dataFrame with found data:
     data = pd.DataFrame(data=packets_data,
                         columns=[DST_IP_STRING,
                                  SRC_IP_STRING,
@@ -65,8 +66,9 @@ def read_packets(file_path):
                                  SRC_PORT_STRING,
                                  SIZE_STRING,
                                  TTL_STRING,
-                                 PROTOCOL_STRING])
+                                 PROTOCOL_STRING,
+                                 SEQ_NUM_STRING])
 
     return data
 
-# read_pcap_file("/Users/Leon/Documents/EA/NTLM-wenchao.pcap")
+#read_packets("/Users/Leon/Documents/EA/NTLM-wenchao.pcap")

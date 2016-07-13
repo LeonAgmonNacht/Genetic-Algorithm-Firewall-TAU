@@ -1,6 +1,6 @@
 from ParamVector import *
 from ast import literal_eval
-
+from random import choice
 
 def get_set_from_string(set_string):
     """
@@ -30,3 +30,16 @@ def get_param_vector_from_string(param_vector_string):
     args[9] = int(args[9])
     args[10] = literal_eval(args[10])
     return ParamVector(*args)
+
+# protocols:
+
+protocols_file = open("protocols.txt")
+protocols_lines = protocols_file.readlines()
+protocols = [line.split(" ")[0] for line in protocols_lines]
+
+
+def get_random_protocol():
+    """
+    :return: a random string representing a protocol supported by the scapy library
+    """
+    return choice(protocols)
