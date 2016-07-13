@@ -14,7 +14,8 @@ class FireWall(object):
         """
         # the function that should return if a packet is malicious or not:
         self.func = FireWall.individual_firewall_generator(param_vector)
-
+    def __call__(self, data_vector):
+        return self.func(data_vector)
     @staticmethod
     def individual_firewall_generator(param_vector):
         """
