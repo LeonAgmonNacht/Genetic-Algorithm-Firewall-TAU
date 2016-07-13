@@ -42,8 +42,7 @@ class FireWall(object):
         :param param_vector2: the second ParamVector to merge
         :return: a new ParamVector that is the merge of both
         """
-        pass
-
+        return FireWall.individual_firewall_generator(param_vector1+param_vector2)
 
 # single data (vector) methods:
 particular_data_indicator_tuple = namedtuple("ip_method",

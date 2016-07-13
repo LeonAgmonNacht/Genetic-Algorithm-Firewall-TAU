@@ -47,6 +47,8 @@ class ParamVector(object):
         """
         pass
 
+
+
     @staticmethod
     def generate_random_data():
         """
@@ -54,3 +56,8 @@ class ParamVector(object):
         :return: an instance of ParamVector that is defined using random data
         """
         pass
+
+    def __add__(self, other):
+        #do_shit
+        result.mutate()
+        return result
