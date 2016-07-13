@@ -4,7 +4,7 @@ class ParamVector(object):
     a ParamVector is a class that represents a vector that defines a firewall.
     we have our indicator functions that should get parameters, lets call these functions g1...gn
     for each gi we can say that there is a vector (ai1,...,aim) of scalars. so we can represent every firewall Fl
-    as the sum of Fi^gi  where Fi is a mutate function.
+    as the sum of fi^gi  where fi is a mutate function.
     so we can think about a vector of different sized vectors, where every vector i is:
     fi, ai1,...aim
     """
