@@ -18,3 +18,9 @@ class ParamVector(object):
         :return: an instance of ParamVector that is defined using random data
         """
         pass
+
+    def __repr__(self):
+        """
+        :return: a string that represents a ParamVector
+        """
+        return ""
