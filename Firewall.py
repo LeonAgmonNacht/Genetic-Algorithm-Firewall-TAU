@@ -44,9 +44,10 @@ class FireWall(object):
     def is_malicious(self,packet):
         """
 
-        :param packet: the packet in whatever format you woul like to use
+        :param packet: the packet in whatever format you would like to use
         :return:
         """
+        pass
 
 # single data (vector) methods:
 particular_data_indicator_tuple = namedtuple("ip_method",
