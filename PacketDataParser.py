@@ -69,4 +69,4 @@ def read_pcap_file(file_path):
 
     return data
 
-read_pcap_file("/Users/Leon/Documents/EA/NTLM-wenchao.pcap")
+# read_pcap_file("/Users/Leon/Documents/EA/NTLM-wenchao.pcap")
