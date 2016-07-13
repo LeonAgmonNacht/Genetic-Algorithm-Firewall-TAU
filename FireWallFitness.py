@@ -1,3 +1,6 @@
+from random import uniform
+
+
 class FireWallTest():
     """
     this class tests a given firewall with pre-given data and ranks it
@@ -24,4 +27,4 @@ class FireWallTest():
         :param fire_wall: the firewall to score
         :return: score between [0,1]
         """
-        pass
+        return uniform(0,1)

@@ -38,7 +38,7 @@ class ParamVector(object):
     SIZE_RANDOM_HIGH_MAX = 2000
     TTL_THRESH_MIN = 0
     TTL_THRESH_MAX = 255
-    SEQ_TRESH_MIN = 0
+    SEQ_THRESH_MIN = 0
     SEQ_THRESH_MAX = 2**31
     WEIGHT_MAX_VAL = 10
 
@@ -95,21 +95,23 @@ class ParamVector(object):
         dst_ip = random_ip()
         src_port = random_port()
         dst_port = random_port()
-        size_low = randint(SIZE_RANDOM_LOW_MIN, SIZE_RANDOM_LOW_MAX)
-        size_high = size_low + randint(SIZE_RANDOM_HIGH_MIN, SIZE_RANDOM_HIGH_MAX)
-        ttl = randint(TTL_THRESH_MIN, TTL_THRESH_MAX)
+        size_low = randint(ParamVector.SIZE_RANDOM_LOW_MIN, ParamVector.SIZE_RANDOM_LOW_MAX)
+        size_high = size_low + randint(ParamVector.SIZE_RANDOM_HIGH_MIN, ParamVector.SIZE_RANDOM_HIGH_MAX)
+        ttl = randint(ParamVector.TTL_THRESH_MIN, ParamVector.TTL_THRESH_MAX)
         protoc = get_random_protocol()
-        seq_low = randint(SEQ_TRESH_MIN, SEQ_TRESH_MAX)
-        seq_high = seq_low + randint(SEQ_TRESH_MIN, SEQ_TRESH_MAX)
+        seq_low = randint(ParamVector.SEQ_THRESH_MIN, ParamVector.SEQ_THRESH_MAX)
+        seq_high = seq_low + randint(ParamVector.SEQ_THRESH_MIN, ParamVector.SEQ_THRESH_MAX)
 
-        weights = {DST_IP : uniform(0, WEIGHT_MAX_VAL),
-                   SRC_IP : uniform(0, WEIGHT_MAX_VAL),
-                   DST_PORT : uniform(0, WEIGHT_MAX_VAL),
-                   SRC_PORT : uniform(0, WEIGHT_MAX_VAL),
-                   SIZE : uniform(0, WEIGHT_MAX_VAL),
-                   TTL : uniform(0, WEIGHT_MAX_VAL),
-                   PROTOCOL : uniform(0, WEIGHT_MAX_VAL),
-                   SEQ : uniform(0, WEIGHT_MAX_VAL)}
+        weight_func = lambda: uniform(0, ParamVector.WEIGHT_MAX_VAL)
+
+        weights = {ParamVector.DST_IP : weight_func(),
+                   ParamVector.SRC_IP : weight_func(),
+                   ParamVector.DST_PORT : weight_func(),
+                   ParamVector.SRC_PORT : weight_func(),
+                   ParamVector.SIZE : weight_func(),
+                   ParamVector.TTL : weight_func(),
+                   ParamVector.PROTOCOL : weight_func(),
+                   ParamVector.SEQ : weight_func()}
 
         sum_weights = sum(weights.values())
 
@@ -118,41 +120,17 @@ class ParamVector(object):
         for key in weights.keys():
             weights[key] = weights[key]/sum_weights
 
-        return ParamVector(ip_src_set=set(src_ip),
-                           ip_dst_set=set(dst_ip),
-                           port_src_set=set(src_port),
-                           port_dst_set=set(dst_port),
-                           sizes_low_bound=size_low,
-                           sizes_high_bound=size_high,
-                           ttl_thresh=ttl,
-                           protocol_set=set(protoc),
-                           seq_low_bound=seq_low,
-                           seq_high_bound=seq_high,
+        return ParamVector(ip_src_set={src_ip},
+                           ip_dst_set={dst_ip},
+                           port_src_set={src_port},
+                           port_dst_set={dst_port},
+                           sizes_lower_bound=size_low,
+                           sizes_upper_bound=size_high,
+                           ttl_lower_bound=ttl,
+                           protocol_set={protoc},
+                           seq_lower_bound=seq_low,
+                           seq_upper_bound=seq_high,
                            weight_of=weights)
-
-
-    def __add__(self, other):
-        """
-        creates a mate between these ParamVectors
-        :param other: another ParamVector
-        :return: a "child" of the given ParamVectors
-        """
-        assert not isinstance(other, ParamVector)
-        weights = {}
-        for param in self.weight_keys:
-            if(random.randint(0,1)):
-                weights[param] = self[param]
-        result = ParamVector(ParamVector.mate_ordinals(self.ip_src_set, other.ip_src_set),
-                                  ParamVector._mate_ordinals(self.ip_dst_set, other.ip_dst_set),
-                                  ParamVector._mate_ordinals(self.port_dst_set, other.port_dst_set),
-                                  ParamVector._mate_ordinals(self.port_src_set, other.port_src_set),
-                                  ParamVector._mate_bounds(False, self.sizes_lower_bound, other.sizes_lower_bound),
-                                  ParamVector._mate_bounds(True, self.sizes_upper_bound, other.sizes_upper_bound),
-                                  ParamVector._mate_bounds(False, self.ttl_lower_bound, other.ttl_lower_bound),
-                                  ParamVector.mate_ordinals(self.protocol_set, other.protocol_set),
-                                  ParamVector(False, self.seq_lower_bound, other.seq_lower_bound),
-                                  ParamVector._mate_bounds(True, self.seq_upper_bound, other.seq_lower_bound), weights)
-        return result.mutate()
 
     @staticmethod
     def _mate_ordinals(*ordinals):
@@ -161,18 +139,46 @@ class ParamVector(object):
         :param ordinals: the ordinals
         :return: one of the given ordinal sets or their union.
         """
-        return {0:ordinals[0],1:ordinals[1],2:sum(ordinals)}[random.randint(0,2)]
+        return {0:ordinals[0],1:ordinals[1],2:ordinals[0].union(ordinals[1])}[randint(0,2)]
 
     @staticmethod
     def _mate_bounds(is_max,*bounds):
-        return {0: bounds[0], 1: bounds[1], 2: sum(bounds)}[random.randint(0, 2)]
+        # TODO: add docs
+        return {0: bounds[0], 1: bounds[1], 2: sum(bounds)}[randint(0, 2)]
+
+    def __add__(self, other):
+        """
+        creates a mate between these ParamVectors
+        :param other: another ParamVector
+        :return: a "child" of the given ParamVectors
+        """
+        assert isinstance(other, ParamVector)
+        weights = {}
+        for param in self.weight_keys:
+            if(randint(0,1)):
+                weights[param] = self[param]
+            else:
+                weights[param] = other[param]
+
+        result = ParamVector(ParamVector._mate_ordinals(self.ip_src_set, other.ip_src_set),
+                                  ParamVector._mate_ordinals(self.ip_dst_set, other.ip_dst_set),
+                                  ParamVector._mate_ordinals(self.port_dst_set, other.port_dst_set),
+                                  ParamVector._mate_ordinals(self.port_src_set, other.port_src_set),
+                                  ParamVector._mate_bounds(False, self.sizes_lower_bound, other.sizes_lower_bound),
+                                  ParamVector._mate_bounds(True, self.sizes_upper_bound, other.sizes_upper_bound),
+                                  ParamVector._mate_bounds(False, self.ttl_lower_bound, other.ttl_lower_bound),
+                                  ParamVector._mate_ordinals(self.protocol_set, other.protocol_set),
+                                  ParamVector._mate_bounds(False, self.seq_lower_bound, other.seq_lower_bound),
+                                  ParamVector._mate_bounds(True, self.seq_upper_bound, other.seq_lower_bound), weights)
+        return result.mutate()
+
 
     def __getitem__(self, item):
         """
         :param item: name of the field which should be returned
         :return: the value of this field
         """
-        assert item not in self.weight_keys
+        # assert item in self.weight_keys
         return self.weight_of[item]
 
     def __repr__(self):

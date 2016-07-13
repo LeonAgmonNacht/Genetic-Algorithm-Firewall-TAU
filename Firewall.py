@@ -94,7 +94,7 @@ class FireWall(object):
         :param param_vector2: the second ParamVector to merge
         :return: a new ParamVector that is the merge of both
         """
-        return FireWall.individual_firewall_generator(param_vector1 + param_vector2)
+        return param_vector1 + param_vector2
 
     def is_malicious(self,packet):
         """
