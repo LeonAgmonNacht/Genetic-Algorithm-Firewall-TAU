@@ -1,6 +1,6 @@
 class FireWallTest():
     """
-    this class tests a given firewall with pregiven data and ranks it
+    this class tests a given firewall with pre-given data and ranks it
     :ivar clean_data: the clean data to be used to test fire walls (packets with no malicious intentions)
     :ivar malicious_data: the malicious data to be used to test fire walls (packets with malicious intentions)
     """
@@ -12,7 +12,7 @@ class FireWallTest():
         self.clean_data = clean_data
         self.malicious_data = malicious_data
 
-    def fitness_value(self, fire_wall):
+    def get_fitness(self, fire_wall):
         """
         tests the fire wall we've built.
         we test what is the result for each packet (malicious and not), and then we score the fire wall
