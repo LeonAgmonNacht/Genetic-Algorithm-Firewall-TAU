@@ -35,9 +35,6 @@ class FireWallGeneration:
             new_firewall = FireWall.mate_param_vectors(fw_1, fw_2)
             generated_firewall.append(new_firewall)
 
-
-        pass
-
     def write_self_to_file(self, path_file):
         """
         writes the string representation of self to the given file path
