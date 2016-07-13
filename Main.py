@@ -4,8 +4,8 @@ from PacketDataParser import *
 
 GENERATIONS_NUMBER = 10000
 NUM_OF_FIREWALLS = 250
-CLEAN_PACKETS_PCAP_FILE_PATH = ""
-MALICIOUS_PACKETS_PCAP_FILE_PATH = ""
+CLEAN_PACKETS_PCAP_FILE_PATH = "/Users/Leon/Documents/EA/NTLM-wenchao.pcap"
+MALICIOUS_PACKETS_PCAP_FILE_PATH = "/Users/Leon/Documents/EA/NTLM-wenchao.pcap"
 
 
 def read_malicious_packets():
@@ -21,11 +21,12 @@ def read_clean_packets():
     reads the clean packets from the path in constants
     :return: a DataFrame with the relevant data retrieved from the packets
     """
-    read_packets(CLEAN_PACKETS_PCAP_FILE_PATH)
+    return read_packets(CLEAN_PACKETS_PCAP_FILE_PATH)
 
 
 if __name__ == "__main__":
-    fitness_factory = FireWallTest({}, {})
+    fitness_factory = FireWallTest(read_clean_packets(),
+                                   read_malicious_packets())
     generation = FireWallGeneration(param=NUM_OF_FIREWALLS)
     generation_counter = 0
     for _ in range(GENERATIONS_NUMBER):
