@@ -20,7 +20,7 @@ class FireWallGeneration:
         of the firewalls in the generation self
         :return: the next generation created using the firewalls in self
         """
-        # TODO: read each new generation to file in order to be more robust
+        # TODO: read each new generation to file in order to be more robust #  Daniel:why? much slower...
         pass
 
     def write_self_to_file(self, path_file):

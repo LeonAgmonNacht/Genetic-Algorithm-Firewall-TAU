@@ -42,8 +42,8 @@ def read_pcap_file(file_path):
     packets_data = []
     for sc_packet in packets:
 
-        dstIP = sc_packet[IP].dst
-        srcIP = sc_packet[IP].src
+        dstIP = sc_packet[IP].dst # what is IP? 
+        srcIP = sc_packet[IP].src # what is IP?
         dstPort = sc_packet.dport
         srcPort = sc_packet.sport
         size = len(sc_packet)
