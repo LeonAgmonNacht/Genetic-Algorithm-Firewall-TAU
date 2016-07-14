@@ -27,13 +27,14 @@ particular_data_indicator = particular_data_indicator_tuple(ip_method=simple_ind
                                                             sequence_num_method=lambda val, min_value, max_val:
                                                             not range_indicator_method(val, min_value, max_val))
 
+
 class FireWall(object):
     """
     a class representing a firewall (the ability to detect malicious packets)
     :ivar param_vector: the vector that defines the behaviour of self, an instance of ParamVector
     """
 
-    MALICIOUS_LOWER_THRESH = 0.5 #  the threshold that indicates the minimum value of packet to be considered as malicious
+    MALICIOUS_LOWER_THRESH = 0.5  # the threshold that indicates the minimum value of packet to be considered as malicious
 
     def __init__(self, param_vector):
         """
@@ -46,7 +47,7 @@ class FireWall(object):
         self.param_vector = param_vector
 
     def __call__(self, data_vector):
-        return self.func(data_vector)
+        return self.is_malicious(data_vector)
 
     @staticmethod
     def individual_firewall_generator(param_vector):
@@ -62,24 +63,24 @@ class FireWall(object):
         port_src_func = lambda port: particular_data_indicator.port_method(port, param_vector.port_src_set)
         port_dst_func = lambda port: particular_data_indicator.port_method(port, param_vector.port_dst_set)
         size_func = lambda size: particular_data_indicator.size_packet_method(size,
-                                                                                 param_vector.sizes_lower_bound,
-                                                                                 param_vector.sizes_upper_bound)
+                                                                              param_vector.sizes_lower_bound,
+                                                                              param_vector.sizes_upper_bound)
         ttl_func = lambda ttl: particular_data_indicator.ttl_method(ttl, param_vector.ttl_lower_bound)
         protocol_func = lambda pr: particular_data_indicator.type_packet_method(pr, param_vector.protocol_set)
         seq_func = lambda seq: particular_data_indicator.sequence_num_method(seq,
-                                                                                      param_vector.seq_lower_bound,
-                                                                                      param_vector.seq_upper_bound)
-        all_func = lambda packet:\
-            ip_src_func(packet[SRC_IP_STRING])+\
-            ip_dst_func(packet[DST_IP_STRING])+\
-            port_src_func(packet[SRC_PORT_STRING])+\
-            port_dst_func(packet[DST_PORT_STRING])+\
-            size_func(packet[SIZE_STRING])+\
-            ttl_func(packet[TTL_STRING])+\
-            protocol_func(packet[PROTOCOL_STRING])+\
+                                                                             param_vector.seq_lower_bound,
+                                                                             param_vector.seq_upper_bound)
+        all_func = lambda packet: \
+            ip_src_func(packet[SRC_IP_STRING]) + \
+            ip_dst_func(packet[DST_IP_STRING]) + \
+            port_src_func(packet[SRC_PORT_STRING]) + \
+            port_dst_func(packet[DST_PORT_STRING]) + \
+            size_func(packet[SIZE_STRING]) + \
+            ttl_func(packet[TTL_STRING]) + \
+            protocol_func(packet[PROTOCOL_STRING]) + \
             seq_func(packet[SEQ_NUM_STRING])
 
-        normlized_func = lambda packet: float(all_func(packet))/float(sum_weights)
+        normlized_func = lambda packet: float(all_func(packet)) / float(sum_weights)
         return normlized_func
 
     @staticmethod
@@ -97,12 +98,16 @@ class FireWall(object):
         """
         return param_vector1 + param_vector2
 
-    def is_malicious(self,packet):
+    def is_malicious(self, packet):
         """
         :param packet: the packet in whatever format you would like to use
         :return: true if the packet is malicious, else false
         """
-        return self(packet) > FireWall.MALICIOUS_LOWER_THRESH
+        if len({packet[SRC_IP_STRING], packet[DST_IP_STRING], (127,0,0,1)}) < 3 \
+                or packet[DST_PORT_STRING] == 0 or packet[SRC_PORT_STRING] == 0:
+            return True
+
+        return self.func(packet) > self.param_vector.malicious_threshold
 
     def __repr__(self):
         """

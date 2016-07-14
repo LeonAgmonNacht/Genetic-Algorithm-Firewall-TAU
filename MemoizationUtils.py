@@ -3,6 +3,7 @@ from Firewall import FireWall
 from ast import literal_eval
 from random import choice
 
+
 def get_set_from_string(set_string):
     """
     :param set_string: a string represent of a set
@@ -32,12 +33,14 @@ def get_param_vector_from_string(param_vector_string):
     args[10] = literal_eval(args[10])
     return ParamVector(*args)
 
+
 def get_firewall_from_string(firewall_string):
     """
     :param firewall_string: a string represent of a Firewall object (has to be in the repr format)
     :return: a FireWall that is being represented in the string
     """
     return FireWall(get_param_vector_from_string(firewall_string.split("-")[1]))
+
 
 # protocols:
 

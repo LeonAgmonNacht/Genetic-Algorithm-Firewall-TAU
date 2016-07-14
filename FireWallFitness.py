@@ -31,14 +31,14 @@ class FireWallTest():
         :param fire_wall: the firewall to score
         :return: score between [0,1]
         """
-        dm = 0 #  num of detected malware packets
-        mc = 0 #  number of clean packets detected as malicous packets
+        dm = 0  # num of detected malware packets
+        mc = 0  # number of clean packets detected as malicous packets
 
         for _, mp in self.malicious_data.iterrows(): dm += fire_wall.is_malicious(mp)
         for _, cp in self.clean_data.iterrows(): mc += fire_wall.is_malicious(cp)
 
         # print (dm, mc)
         try:
-            return 1.0/((len(self.malicious_data)/float(dm)) + (mc/float(len(self.clean_data))))
+            return 1.0 / ((len(self.malicious_data) / float(dm)) + (mc / float(len(self.clean_data))))
         except ZeroDivisionError:
             return 0
