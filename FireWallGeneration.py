@@ -71,10 +71,12 @@ class FireWallGeneration:
 
         fitnesses = []
         [fitnesses.extend(r) for r in results]
-        fitnesses.sort(key=lambda (fw, fitness): fitnesses)
+        fitnesses.sort(key=lambda (fw, fitness): fitness)
+        print "*"*100
+        print map(lambda (fw, fitness): fitness, fitnesses)
         print "fitness: " + str(fitnesses[-1][1])
         print fitnesses[-1][0]
-
+        print "*"*100
         selected_firewalls = [fw for (fw, _) in fitnesses[-passing_num:]]
         generated_firewall = []
         for _ in range(self.num_of_firewalls):

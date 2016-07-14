@@ -40,8 +40,8 @@ class FireWallTest():
         bad_index = randint(0,len(self.malicious_data) - FireWallTest.NUM_BAD_PACKETS)
         good_index = randint(0,len(self.clean_data) - FireWallTest.NUM_GOOD_PACKETS)
 
-        good_packets_to_check = self.clean_data[good_index : good_index + FireWallTest.NUM_GOOD_PACKETS + 1]
-        bad_packets_to_check = self.malicious_data[bad_index : bad_index + FireWallTest.NUM_BAD_PACKETS + 1]
+        good_packets_to_check = self.clean_data[good_index : good_index + FireWallTest.NUM_GOOD_PACKETS]
+        bad_packets_to_check = self.malicious_data[bad_index : bad_index + FireWallTest.NUM_BAD_PACKETS]
         for _, mp in bad_packets_to_check.iterrows():
             dm += fire_wall.is_malicious(mp)
         for _, cp in good_packets_to_check.iterrows():

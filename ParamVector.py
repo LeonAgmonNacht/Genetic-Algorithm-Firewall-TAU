@@ -130,7 +130,7 @@ class ParamVector(object):
         self.seq_lower_bound = int(ParamVector._mutate_numeric(self.seq_lower_bound, 2))
         self.seq_upper_bound = int(ParamVector._mutate_numeric(self.seq_upper_bound, 2))
         for key in self.weight_keys:
-            self.weight_of[key] = ParamVector._mutate_numeric(self.weight_of[key], 0.3)
+            self.weight_of[key] = ParamVector._mutate_numeric(self.weight_of[key], 0.2)
 
         self.malicious_threshold = ParamVector._mutate_numeric(self.malicious_threshold, 0.1)
         return self
@@ -191,7 +191,7 @@ class ParamVector(object):
         :param ordinals: the ordinals
         :return: one of the given ordinal sets or their union.
         """
-        return {0: ordinals[0], 1: ordinals[1], 2: ordinals[0].union(ordinals[1])}[randint(0, 2)]
+        return {0: ordinals[0], 1: ordinals[1], 2: ordinals[0].union(ordinals[1]), 3: ordinals[0].union(ordinals[1])}[randint(0, 3)]
 
     @staticmethod
     def _mate_bounds(*bounds):
