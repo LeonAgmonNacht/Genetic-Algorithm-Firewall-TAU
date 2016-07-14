@@ -39,13 +39,16 @@ class FireWallTest():
         mc = 0  # number of clean packets detected as malicous packets
         bad_index = randint(0,len(self.malicious_data) - FireWallTest.NUM_BAD_PACKETS)
         good_index = randint(0,len(self.clean_data) - FireWallTest.NUM_GOOD_PACKETS)
-        for _, mp in self.malicious_data[bad_index : bad_index + FireWallTest.NUM_BAD_PACKETS + 1].iterrows():
+
+        good_packets_to_check = self.clean_data[good_index : good_index + FireWallTest.NUM_GOOD_PACKETS + 1]
+        bad_packets_to_check = self.malicious_data[bad_index : bad_index + FireWallTest.NUM_BAD_PACKETS + 1]
+        for _, mp in bad_packets_to_check.iterrows():
             dm += fire_wall.is_malicious(mp)
-        for _, cp in self.clean_data[good_index : good_index + FireWallTest.NUM_GOOD_PACKETS + 1].iterrows():
+        for _, cp in good_packets_to_check.iterrows():
             mc += fire_wall.is_malicious(cp)
 
-        # print (dm, mc)
+        print (dm, len(bad_packets_to_check), mc, len(good_packets_to_check))
         try:
-            return 1.0 / ((len(self.malicious_data) / float(dm)) + (mc / float(len(self.clean_data))))
+            return 1.0 / ((len(bad_packets_to_check) / float(dm)) + (mc / float(len(good_packets_to_check))))
         except ZeroDivisionError:
             return 0

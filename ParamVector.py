@@ -21,7 +21,7 @@ class ParamVector(object):
 
     @staticmethod
     def random_port():
-        lambda: randint(0, 65535)
+        return randint(0, 65535)
 
     # constants:
     DST_IP = "dstIP"
@@ -97,9 +97,9 @@ class ParamVector(object):
         tmp_set = set(set_of_values)
         for ordinal in tmp_set:
             r = random()
-            if r < 0.3:
+            if r < 0.5:
                 set_of_values.remove(ordinal)
-                if r < 0.2:
+                if r < 0.4:
                     set_of_values.add(generator())
         return set_of_values
 
