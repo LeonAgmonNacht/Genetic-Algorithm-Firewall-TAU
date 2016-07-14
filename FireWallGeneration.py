@@ -2,6 +2,7 @@ from ParamVector import ParamVector
 from Firewall import FireWall
 from random import choice
 from MemoizationUtils import *
+from pathos.multiprocessing import ProcessingPool as Pool
 
 
 class FireWallGeneration:
@@ -9,6 +10,8 @@ class FireWallGeneration:
     a class for representing a generation of firewalls
     :ivar firewalls: the firewalls that are in this generation, this ivar is a set
     """
+
+    PROCESSES_NUM = 4  # the number of processes to use in order to calculate fitnesses
 
     def __init__(self, param):
         """
@@ -32,6 +35,20 @@ class FireWallGeneration:
             gen_repr += str(f) + "\n"
         return gen_repr
 
+
+    @staticmethod
+    def _calculate_fitness_for_multi_firewalls(parmas):
+        """
+        :param params: a zipped containing the needed data
+        :param params[0] = fitness_calculator: the instance of FireWallFitness to be used in order to calculate the fitness
+        of the firewalls
+        :param params[1] = firewalls: the firewalls to calculate the fitnesses for
+        :return: a list, where the elemnt i is (firewalls[i], fitness of firewall[i])
+        """
+        fitness_calculator = parmas[0][0]
+        firewalls = parmas[1][0]
+        return [(fw, fitness_calculator.get_fitness(fw)) for fw in firewalls]
+
     def generate_next_generation(self, fitness_calculator, passing_num=15):
         """
         :param fitness_calculator: the instance of FireWallFitness to be used in order to calculate the fitness
@@ -39,8 +56,23 @@ class FireWallGeneration:
         :param passing_num: the number of firewalls to select in order to mate them into new firewalls
         :return: the next generation created using the firewalls in self
         """
-        fitnesses = [(fw, fitness_calculator.get_fitness(fw)) for fw in self.firewalls]
+        pool = Pool(processes=FireWallGeneration.PROCESSES_NUM)
+        part_size = len(self.firewalls)/FireWallGeneration.PROCESSES_NUM
+        ordered_firwalls = list(self.firewalls)
+        firewall_parts = []
+        for i in range(FireWallGeneration.PROCESSES_NUM):
+            firewall_parts.append(ordered_firwalls[i * part_size : (i + 1) * part_size])
+
+        results = pool.map(FireWallGeneration._calculate_fitness_for_multi_firewalls,
+                              (zip([fitness_calculator, firewall_parts[0]]),
+                               zip([fitness_calculator, firewall_parts[1]]),
+                               zip([fitness_calculator, firewall_parts[2]]),
+                               zip([fitness_calculator, firewall_parts[3]])))
+        fitnesses = []
+        [fitnesses.extend(r) for r in results]
+        print len(fitnesses)
         fitnesses.sort(key=lambda (fw, fitness): fitnesses)
+
         selected_firewalls = [fw for (fw, _) in fitnesses[-passing_num:]]
         generated_firewall = []
         for _ in range(self.num_of_firewalls):
