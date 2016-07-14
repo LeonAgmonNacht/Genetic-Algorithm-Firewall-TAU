@@ -4,7 +4,7 @@ from PacketDataParser import *
 from time import time
 
 GENERATIONS_NUMBER = 10000
-NUM_OF_FIREWALLS = 250
+NUM_OF_FIREWALLS = 256
 CLEAN_PACKETS_PCAP_FILE_PATH = "/Users/Leon/Documents/EA/NTLM-wenchao.pcap"
 MALICIOUS_PACKETS_PCAP_FILE_PATH = "/Users/Leon/Documents/EA/NTLM-wenchao.pcap"
 
