@@ -12,6 +12,7 @@ class FireWallGeneration:
     """
 
     PROCESSES_NUM = 4  # the number of processes to use in order to calculate fitnesses
+    process_pool = Pool(processes=PROCESSES_NUM)
 
     def __init__(self, param):
         """
@@ -55,7 +56,7 @@ class FireWallGeneration:
         :param passing_num: the number of firewalls to select in order to mate them into new firewalls
         :return: the next generation created using the firewalls in self
         """
-        pool = Pool(processes=FireWallGeneration.PROCESSES_NUM)
+        pool = FireWallGeneration.process_pool
         part_size = len(self.firewalls) / FireWallGeneration.PROCESSES_NUM
         ordered_firwalls = list(self.firewalls)
         firewall_parts = []
@@ -67,6 +68,7 @@ class FireWallGeneration:
                             zip([fitness_calculator, firewall_parts[1]]),
                             zip([fitness_calculator, firewall_parts[2]]),
                             zip([fitness_calculator, firewall_parts[3]])))
+
         fitnesses = []
         [fitnesses.extend(r) for r in results]
         fitnesses.sort(key=lambda (fw, fitness): fitnesses)

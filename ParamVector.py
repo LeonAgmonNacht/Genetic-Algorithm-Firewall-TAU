@@ -94,14 +94,14 @@ class ParamVector(object):
         :param generator: the generator for this specific ordinal type
         :return: the new representation
         """
-        tmp_set = set()
-        for ordinal in set_of_values:
+        tmp_set = set(set_of_values)
+        for ordinal in tmp_set:
             r = random()
-            if r < 0.2:
-                tmp_set.add(generator())
-            elif 0.3 < r:
-                tmp_set.add(ordinal)
-        return tmp_set
+            if r < 0.3:
+                set_of_values.remove(ordinal)
+                if r < 0.2:
+                    set_of_values.add(generator())
+        return set_of_values
 
     @staticmethod
     def _mutate_numeric(value, step):
@@ -262,6 +262,6 @@ class ParamVector(object):
         repr += "protocol" + suffix + str(self.protocol_set) + "::"
         repr += "seq_low" + suffix + str(self.seq_lower_bound) + "::"
         repr += "seq_high" + suffix + str(self.seq_upper_bound) + "::"
-        repr += "weight" + suffix + str(self.weight_of)
+        repr += "weight" + suffix + str(self.weight_of) + "::"
         repr += "malicious_threshold" + suffix + str(self.malicious_threshold)
         return repr
