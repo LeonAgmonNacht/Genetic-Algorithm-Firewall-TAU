@@ -1,4 +1,4 @@
-from random import uniform
+from random import uniform, randint
 
 
 class FireWallTest():
@@ -9,6 +9,10 @@ class FireWallTest():
     :ivar malicious_data: the malicious data to be used to test fire walls (packets with malicious intentions)
     (a DataFrame instance)
     """
+    # the number of good packets to test each time
+    NUM_GOOD_PACKETS = 1000
+    # the number of bad pakcets to test each time
+    NUM_BAD_PACKETS = 1000
 
     def __init__(self, clean_data, malicious_data):
         """
@@ -33,9 +37,12 @@ class FireWallTest():
         """
         dm = 0  # num of detected malware packets
         mc = 0  # number of clean packets detected as malicous packets
-
-        for _, mp in self.malicious_data.iterrows(): dm += fire_wall.is_malicious(mp)
-        for _, cp in self.clean_data.iterrows(): mc += fire_wall.is_malicious(cp)
+        bad_index = randint(0,len(self.malicious_data) - FireWallTest.NUM_BAD_PACKETS)
+        good_index = randint(0,len(self.clean_data) - FireWallTest.NUM_GOOD_PACKETS)
+        for _, mp in self.malicious_data[bad_index : bad_index + FireWallTest.NUM_BAD_PACKETS + 1].iterrows():
+            dm += fire_wall.is_malicious(mp)
+        for _, cp in self.clean_data[good_index : good_index + FireWallTest.NUM_GOOD_PACKETS + 1].iterrows():
+            mc += fire_wall.is_malicious(cp)
 
         # print (dm, mc)
         try:

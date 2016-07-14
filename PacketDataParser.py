@@ -13,9 +13,16 @@ PROTOCOL_STRING = "protocol"
 SEQ_NUM_STRING = "seq"
 
 
+def get_packets_from_csv(csv_path):
+    """
+    receives the packets from the given csv file path
+    :param csv_path: the path to the csv file containing the data
+    """
+    return pd.read_csv(csv_path)
+
 def get_packets_from_pcap(pcap_path):
     """
-    receives the packets from the given file path
+    receives the packets from the given pcap file path
     :param pcap_path: the path to the pcap file to load the data from
     :return: list of Packets holding the data in the pcap file
     """
@@ -43,23 +50,23 @@ def read_packets(file_path):
     packets = get_packets_from_pcap(file_path)
     packets_data = []
     for sc_packet in packets:
+        try:
+            dstIP = sc_packet[IP].dst
+            srcIP = sc_packet[IP].src
+            dstPort = sc_packet.dport
+            srcPort = sc_packet.sport
+            size = len(sc_packet)
+            ttl = sc_packet.ttl
+            seq = sc_packet.seq
+            # get upper layer in packet:
+            layer_count = 0
+            while sc_packet.getlayer(layer_count):
+                layer_count += 1
 
-        dstIP = sc_packet[IP].dst
-        srcIP = sc_packet[IP].src
-        dstPort = sc_packet.dport
-        srcPort = sc_packet.sport
-        size = len(sc_packet)
-        ttl = sc_packet.ttl
-        seq = sc_packet.seq
-        # get upper layer in packet:
-        layer_count = 0
-        while sc_packet.getlayer(layer_count):
-            layer_count += 1
-
-        protocol = sc_packet.getlayer(layer_count - 2).name
-        packets_data.append([dstIP, srcIP, dstPort, srcPort, size, ttl, protocol, seq])
-
-    # created pandas dataFrame with found data:
+            protocol = sc_packet.getlayer(layer_count - 2).name
+            packets_data.append([dstIP, srcIP, dstPort, srcPort, size, ttl, protocol, seq])
+        except Exception:  # created pandas dataFrame with found data:
+            pass
     data = pd.DataFrame(data=packets_data,
                         columns=[DST_IP_STRING,
                                  SRC_IP_STRING,

@@ -6,7 +6,7 @@ __pycache__/
 *.so
 
 .idea/
-
+*.pcap
 Test.py
 
 # Distribution / packaging
