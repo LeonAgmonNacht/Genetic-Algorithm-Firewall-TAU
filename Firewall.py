@@ -15,14 +15,14 @@ particular_data_indicator_tuple = namedtuple("ParticularDataIndicator",
 # methods types:
 simple_indicator_method = lambda param, arr: param in arr
 range_indicator_method = lambda val, min_value, max_val: min_value <= val <= max_val
-greater_indicator_method = lambda val, threshold: val > threshold
+less_than_indicator_method = lambda val, threshold: val < threshold
 
 # structure that contains the needed functions
 
 particular_data_indicator = particular_data_indicator_tuple(ip_method=simple_indicator_method,
                                                             port_method=simple_indicator_method,
                                                             size_packet_method=range_indicator_method,
-                                                            ttl_method=greater_indicator_method,
+                                                            ttl_method=less_than_indicator_method,
                                                             type_packet_method=simple_indicator_method,
                                                             sequence_num_method=lambda val, min_value, max_val:
                                                             not range_indicator_method(val, min_value, max_val))

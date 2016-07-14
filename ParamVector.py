@@ -13,9 +13,16 @@ class ParamVector(object):
     fi, ai1,...aim
     :ivar weight_of: weight_of contains the following keys: DST_IP, SRC_IP, DST_PORT, SRC_PORT, SIZE, TTL, PROTOCOL, SEQ
     """
+
     # helper lambdas:
-    random_ip = lambda: tuple([randint(0, 255) for _ in range(4)])
-    random_port = lambda: randint(0, 65535)
+    @staticmethod
+    def random_ip():
+        return tuple([randint(0, 255) for _ in range(4)])
+
+    @staticmethod
+    def random_port():
+        lambda: randint(0, 65535)
+
     # constants:
     DST_IP = "dstIP"
     SRC_IP = "srcIP"
@@ -87,13 +94,15 @@ class ParamVector(object):
         :param generator: the generator for this specific ordinal type
         :return: the new representation
         """
+        tmp_set = set()
         for ordinal in set_of_values:
             r = random()
-            if r < 0.3:
-                set_of_values.remove(ordinal)
-                if r<0.2:
-                    set_of_values.add(generator())
-        return set_of_values
+            if r < 0.2:
+                tmp_set.add(generator())
+            elif 0.3 < r:
+                tmp_set.add(ordinal)
+        return tmp_set
+
     @staticmethod
     def _mutate_numeric(value, step):
         """
@@ -114,14 +123,14 @@ class ParamVector(object):
         self.ip_dst_set = ParamVector._mutate_ordinals(self.ip_dst_set, ParamVector.random_ip)
         self.port_src_set = ParamVector._mutate_ordinals(self.port_src_set, ParamVector.random_port)
         self.port_dst_set = ParamVector._mutate_ordinals(self.port_dst_set, ParamVector.random_port)
-        self.sizes_lower_bound = int(ParamVector._mutate_numeric(self.sizes_lower_bound,2))
-        self.sizes_upper_bound = int(ParamVector._mutate_numeric(self.sizes_upper_bound,2))
-        self.ttl_lower_bound = int(ParamVector._mutate_numeric(self.ttl_lower_bound,2))
+        self.sizes_lower_bound = int(ParamVector._mutate_numeric(self.sizes_lower_bound, 2))
+        self.sizes_upper_bound = int(ParamVector._mutate_numeric(self.sizes_upper_bound, 2))
+        self.ttl_lower_bound = int(ParamVector._mutate_numeric(self.ttl_lower_bound, 2))
         self.protocol_set = ParamVector._mutate_ordinals(self.protocol_set, get_random_protocol)
-        self.seq_lower_bound = int(ParamVector._mutate_numeric(self.seq_lower_bound,2))
-        self.seq_upper_bound = int(ParamVector._mutate_numeric(self.seq_upper_bound,2))
+        self.seq_lower_bound = int(ParamVector._mutate_numeric(self.seq_lower_bound, 2))
+        self.seq_upper_bound = int(ParamVector._mutate_numeric(self.seq_upper_bound, 2))
         for key in self.weight_keys:
-            self.weight_of[key] = ParamVector._mutate_numeric(self.weight_of[key],0.3)
+            self.weight_of[key] = ParamVector._mutate_numeric(self.weight_of[key], 0.3)
 
         self.malicious_threshold = ParamVector._mutate_numeric(self.malicious_threshold, 0.1)
         return self

@@ -38,5 +38,5 @@ def main():
         start_time = time()
         generation = generation.generate_next_generation(fitness_factory)
         print str(generation_counter) + " with time: " + str(start_time - time())
-if __name__ == "main":
+if __name__ == '__main__':
     main()

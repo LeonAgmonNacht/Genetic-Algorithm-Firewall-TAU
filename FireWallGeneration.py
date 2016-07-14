@@ -35,7 +35,6 @@ class FireWallGeneration:
             gen_repr += str(f) + "\n"
         return gen_repr
 
-
     @staticmethod
     def _calculate_fitness_for_multi_firewalls(parmas):
         """
@@ -57,20 +56,19 @@ class FireWallGeneration:
         :return: the next generation created using the firewalls in self
         """
         pool = Pool(processes=FireWallGeneration.PROCESSES_NUM)
-        part_size = len(self.firewalls)/FireWallGeneration.PROCESSES_NUM
+        part_size = len(self.firewalls) / FireWallGeneration.PROCESSES_NUM
         ordered_firwalls = list(self.firewalls)
         firewall_parts = []
         for i in range(FireWallGeneration.PROCESSES_NUM):
-            firewall_parts.append(ordered_firwalls[i * part_size : (i + 1) * part_size])
+            firewall_parts.append(ordered_firwalls[i * part_size: (i + 1) * part_size])
 
         results = pool.map(FireWallGeneration._calculate_fitness_for_multi_firewalls,
-                              (zip([fitness_calculator, firewall_parts[0]]),
-                               zip([fitness_calculator, firewall_parts[1]]),
-                               zip([fitness_calculator, firewall_parts[2]]),
-                               zip([fitness_calculator, firewall_parts[3]])))
+                           (zip([fitness_calculator, firewall_parts[0]]),
+                            zip([fitness_calculator, firewall_parts[1]]),
+                            zip([fitness_calculator, firewall_parts[2]]),
+                            zip([fitness_calculator, firewall_parts[3]])))
         fitnesses = []
         [fitnesses.extend(r) for r in results]
-        print len(fitnesses)
         fitnesses.sort(key=lambda (fw, fitness): fitnesses)
 
         selected_firewalls = [fw for (fw, _) in fitnesses[-passing_num:]]
