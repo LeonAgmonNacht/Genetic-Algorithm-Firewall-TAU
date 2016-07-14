@@ -1,6 +1,7 @@
 from FireWallGeneration import FireWallGeneration
 from FireWallFitness import FireWallTest
 from PacketDataParser import *
+from time import time
 
 GENERATIONS_NUMBER = 10000
 NUM_OF_FIREWALLS = 250
@@ -24,7 +25,7 @@ def read_clean_packets():
     return read_packets(CLEAN_PACKETS_PCAP_FILE_PATH)
 
 
-if __name__ == "__main__":
+def main():
     fitness_factory = FireWallTest(read_clean_packets(),
                                    read_malicious_packets())
     generation = FireWallGeneration(param=NUM_OF_FIREWALLS)
@@ -34,4 +35,8 @@ if __name__ == "__main__":
             generation.write_self_to_file("generations/Gen-"+str(generation_counter)+".txt")
             print generation_counter
         generation_counter += 1
+        start_time = time()
         generation = generation.generate_next_generation(fitness_factory)
+        print str(generation_counter) + " with time: " + str(start_time - time())
+
+main()
