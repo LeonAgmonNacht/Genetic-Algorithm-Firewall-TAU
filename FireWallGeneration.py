@@ -49,7 +49,7 @@ class FireWallGeneration:
         firewalls = parmas[1][0]
         return [(fw, fitness_calculator.get_fitness(fw)) for fw in firewalls]
 
-    def generate_next_generation(self, fitness_calculator, passing_num=12):
+    def generate_next_generation(self, fitness_calculator, passing_num=10):
         """
         :param fitness_calculator: the instance of FireWallFitness to be used in order to calculate the fitness
         of the firewalls in the generation self

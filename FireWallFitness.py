@@ -37,8 +37,8 @@ class FireWallTest():
         """
         dm = 0  # num of detected malware packets
         mc = 0  # number of clean packets detected as malicous packets
-        bad_index = randint(0,len(self.malicious_data) - FireWallTest.NUM_BAD_PACKETS)
-        good_index = randint(0,len(self.clean_data) - FireWallTest.NUM_GOOD_PACKETS)
+        bad_index = 0 # randint(0,len(self.malicious_data) - FireWallTest.NUM_BAD_PACKETS)
+        good_index = 0 # randint(0,len(self.clean_data) - FireWallTest.NUM_GOOD_PACKETS)
 
         good_packets_to_check = self.clean_data[good_index : good_index + FireWallTest.NUM_GOOD_PACKETS]
         bad_packets_to_check = self.malicious_data[bad_index : bad_index + FireWallTest.NUM_BAD_PACKETS]

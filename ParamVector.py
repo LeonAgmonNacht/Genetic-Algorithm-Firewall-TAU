@@ -97,9 +97,9 @@ class ParamVector(object):
         tmp_set = set(set_of_values)
         for ordinal in tmp_set:
             r = random()
-            if r < 0.5:
+            if r < 0.25:
                 set_of_values.remove(ordinal)
-                if r < 0.4:
+                if r < 0.235:
                     set_of_values.add(generator())
         return set_of_values
 
@@ -191,7 +191,7 @@ class ParamVector(object):
         :param ordinals: the ordinals
         :return: one of the given ordinal sets or their union.
         """
-        return {0: ordinals[0], 1: ordinals[1], 2: ordinals[0].union(ordinals[1]), 3: ordinals[0].union(ordinals[1])}[randint(0, 3)]
+        return {0: ordinals[0], 1: ordinals[1], 2: ordinals[0].union(ordinals[1])}[randint(0, 2)]
 
     @staticmethod
     def _mate_bounds(*bounds):
